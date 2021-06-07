@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Final Project</title>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" 
+  integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css" 
+  integrity="sha384-zEpdAL7W11eTKeoBJK1g79kgl9qjP7g84KfK3AZsuonx38n8ad+f5ZgXtoSDxPOh" crossorigin="anonymous">
+  <link href='css/styles.css' rel='stylesheet' />
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <header class="row py-3 bg-dark text-white">
+      <div class="col mx-2">
+        <h1 class="h1"><b>U.S. Agricultural Water Usage</b></h1>
+      </div>
+    </header>
+
+    <section class="row bg-secondary">
+      <div class="col-12 col-md-7 col-lg-8 px-0">
+        <div id="map" class="bg-light position-relative"></div>
+      </div>
+      <aside id="about" class="col-12 col-md-5 col-lg-4 text-dark py-2">
+        <section>
+          <h2 class="h2 text-dark">Livestock and Crop Water Usage From 2000-2015 by County</h2>
+          <p></p>
+          <p>Created by Ryan Lark.</p>
+          <p>Data was sourced from the<a href="https://water.usgs.gov/watuse/data/"> U.S. Geological Survey</a> and the
+            <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html">U.S. Census</a>.</p>
+          <p>[Blurb about water usage in ag.] Livestock will be colored red and crops will be yellow. There will be a dropdown of the total
+              combined water usage for both as well as individual to toggle the map. Also provide a UI bar to move through the years.</p>
+        </section>
+      </aside>
+    </section>
+    <footer class="row bg-dark text-white py-3">
+      <div class="col mx-2">
+        <ul class="list-unstyled">
+          <li>Ryan Lark</li>
+          <li>6.X.21</li>
+        </ul>
+      </div>
+    </footer>
+  </div> <!-- end .container-fluid -->
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"
+    integrity="sha512-7yA/d79yIhHPvcrSiB8S/7TyX0OxlccU8F/kuB8mHYjLlF1MInPbEohpoqfz0AILoq5hoD7lELZAYYHbyeEjag=="
+    crossorigin="anonymous"></script>
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  </script>
+
+  <script src="https://d3js.org/d3.v6.min.js"></script> <!-- New version of D3 released September 2020-->
+  <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src='js/app.js'></script>
+
+  </script>
+</body>
+
+</html>
