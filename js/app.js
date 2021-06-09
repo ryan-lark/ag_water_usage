@@ -85,7 +85,7 @@
     // var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
 
     drawMap(counties);
-    // drawLegend(breaks, colorize);
+    // drawLegend(breaks);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
   function drawMap(counties) {
@@ -126,6 +126,39 @@
     updateMap(counties);
     // createSliderUI(dataLayer);
   }//-------------------------------------------------------------------------------------------------------------------------------------
+
+  //-------------------------------------------------------------------------------------------------------------------------------------
+
+  function updateMap(counties) {
+
+    const breaks = getClassBreaks(counties);
+
+    // loop through each county layer to update the color and tooltip info
+    counties.eachLayer(function (layer) {
+
+      const props = layer.feature.properties;
+
+      // set the fill color of layer based on its normalized data value
+      layer.setStyle({
+        fillColor: getColor(props[attributeValue], breaks)
+      });
+
+      // assemble string sequence of info for tooltip (end line break with + operator)
+      let tooltipInfo = `<b>${props["State-County Name"]}</b></br>
+            ${((props[attributeValue])).toLocaleString()} Mgal/d`
+
+      // bind a tooltip to layer with county-specific information
+      layer.bindTooltip(tooltipInfo, {
+        // sticky property so tooltip follows the mouse
+        sticky: true
+      });
+
+    });
+
+    addLegend(breaks);
+
+  } //---------------------------------------------------------------------------------------------------------
+  
   function getClassBreaks(counties) {
 
     // create empty Array for storing values
@@ -164,105 +197,65 @@
     } else if (d <= breaks[3][1]) {
       return '#117d11'
     }
-  }
-  //-------------------------------------------------------------------------------------------------------------------------------------
-
-  function updateMap(counties) {
-
-    const breaks = getClassBreaks(counties);
-
-    // loop through each county layer to update the color and tooltip info
-    counties.eachLayer(function (layer) {
-
-      const props = layer.feature.properties;
-
-      // set the fill color of layer based on its normalized data value
-      layer.setStyle({
-        fillColor: getColor(props[attributeValue], breaks)
-      });
-
-      // assemble string sequence of info for tooltip (end line break with + operator)
-      let tooltipInfo = `<b>${props["State-County Name"]}</b></br>
-            ${((props[attributeValue])).toLocaleString()} Mgal/d`
-
-      // bind a tooltip to layer with county-specific information
-      layer.bindTooltip(tooltipInfo, {
-        // sticky property so tooltip follows the mouse
-        sticky: true
-      });
-
-    });
-
-
   }//-------------------------------------------------------------------------------------------------------------------------------------
+  function addLegend(breaks) {
+    // create a new Leaflet control object, and position it top left
+    const legendControl = L.control({ position: 'bottomleft' });
 
-  function drawLegend(breaks, colorize) {
-    // create a Leaflet control for the legend
-    const legendControl = L.control({
-      position: 'topright'
-    });
+    // when the legend is added to the map
+    legendControl.onAdd = function () {
 
-    // when the control is added to the map
-    legendControl.onAdd = function (map) {
+      // select a div element with an id attribute of legend
+      const legend = L.DomUtil.get('legend');
 
-      // create a new division element with class of 'legend' and return
-      const legend = L.DomUtil.create('div', 'legend');
+      // disable scroll and click/touch on map when on legend
+      L.DomEvent.disableScrollPropagation(legend);
+      L.DomEvent.disableClickPropagation(legend);
+
+      // return the selection to the method
       return legend;
 
     };
 
-    // add the legend control to the map
+    // add the empty legend div to the map
     legendControl.addTo(map);
 
-    const legend = $('.legend').html("<h3><span>2001</span> Unemployment Rates</h3><ul>");
+    updateLegend(breaks);
+  } //----------------------------------------------------------------------------------------------------------------------------
 
-    // loop through the break values
-    for (let i = 0; i < breaks.length - 1; i++) {
+  function updateLegend(breaks) {
 
-      // determine color value 
-      const color = colorize(breaks[i], breaks);
+    // select the legend, add a title, begin an unordered list and assign to a variable
+    const legend = $('#legend').html(`<h5>${labels[attributeValue]}</h5>`);
 
-      // create legend item
-      const classRange = `<li><span style="background:${color}"></span>
-              ${breaks[i].toLocaleString()}% &mdash;
-              ${breaks[i + 1].toLocaleString()}% </li>`
+    // loop through the Array of classification break values
+    for (let i = 0; i <= breaks.length - 1; i++) {
 
-      // append to legend unordered list item
-      $('.legend ul').append(classRange);
+      let color = getColor(breaks[i][0], breaks);
+
+      legend.append(
+        `<span style="background:${color}"></span>
+			<label>${(breaks[i][0] * 100).toLocaleString()} &mdash;
+			${(breaks[i][1] * 100).toLocaleString()}%</label>`);
     }
-    // close legend unordered list
-    legend.append("</ul>");
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
-  function createSliderUI(dataLayer, colorize) {
-    const sliderControl = L.control({ position: 'bottomleft' });
+  function addUi(counties) {
+    // create the slider control
+    var selectControl = L.control({ position: "topright" });
 
-    // when added to the map
-    sliderControl.onAdd = function (map) {
-
-      // select an existing DOM element with an id of "ui-controls"
-      const slider = L.DomUtil.get("ui-controls");
-
-      // disable scrolling of map while using controls
-      L.DomEvent.disableScrollPropagation(slider);
-
-      // disable click events while using controls
-      L.DomEvent.disableClickPropagation(slider);
-
-      // return the slider from the onAdd method
-      return slider;
-    }
-
+    // when control is added
+    selectControl.onAdd = function () {
+      // get the element with id attribute of ui-controls
+      return L.DomUtil.get("dropdown-ui");
+    };
     // add the control to the map
-    sliderControl.addTo(map);
+    selectControl.addTo(map);
 
-    // select the form element
-    $(".year-slider")
-      .on("input change", function () { // when user changes
-        const currentYear = this.value; // update the year
-        $('.legend h3 span').html(currentYear); // update the map with current timestamp
-        updateMap(dataLayer, colorize, currentYear); // update timestamp in legend heading
-      });
+    $('#dropdown-ui select').change(function () {
+      attributeValue = this.value;
+      updateMap(counties);
+    });
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
 
