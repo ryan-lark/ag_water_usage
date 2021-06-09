@@ -12,6 +12,7 @@
 
   // create the Leaflet map
   const map = L.map('map', options);
+  new L.control.zoom({position:"topleft"}).addTo(map)
 
   // request tiles and add to map
   const tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
@@ -78,11 +79,11 @@
       }
     });
 
-    // // create class breaks
-    // var breaks = chroma.limits(rates, 'q', 5);
+    // create class breaks
+    var breaks = chroma.limits(rates, 'q', 5);
 
-    // // create color generator function
-    // var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
+    // create color generator function
+    var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
 
     drawMap(counties);
     // drawLegend(breaks);
