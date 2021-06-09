@@ -21,6 +21,14 @@
     ext: 'png'
   }).addTo(map);
 
+  let attributeValue = "IR-WFrTo";
+
+  const labels = {
+    "IR-WFrTo": "Total Usage",
+    "IC-WFrTo": "Livestock Usage",
+    "LS-WFrTo": "Crop Usage"
+  }
+
   // AJAX request for GeoJSON data
   $.getJSON("data/us-counties.json", function (counties) {
 
@@ -71,7 +79,7 @@
       for (const prop in county.properties) {
 
         // if the attribute is a number and not one of the fips codes or name
-        if (prop != "COUNTY_FIP" && prop != "STATE_FIP" && prop != "NAME" && prop != "GEOID") {
+        if (prop != "FIPS" && prop != "State-County Name" && prop != "STATE" && prop != "GEOID") {
 
           // push that attribute value into the array
           rates.push(Number(county.properties[prop]));
@@ -85,8 +93,7 @@
     // create color generator function
     var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
 
-    drawMap(counties);
-    // drawLegend(breaks);
+    drawMap(counties, colorize);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
   function drawMap(counties) {
