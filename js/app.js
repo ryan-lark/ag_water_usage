@@ -26,7 +26,27 @@
    // wait until data is loaded then send to draw map function
    Promise.all([stateGeoJson, countyTopoJson]).then(drawMap);
 
+   $.getJSON("data/cb_2018_us_county.json", function(counties) {
 
+    Papa.parse('data/2005_data.csv', {
+
+        download: true,
+        header: true,
+        complete: function(data) {
+
+            // data is accessible to us here
+            console.log('data: ', data);
+
+            // note that counties is also accessible here!
+            console.log('counties: ', counties);
+
+        }
+    }); // end of Papa.parse()
+
+});  // end of $.getJSON()
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
    // accepts the data as a parameter countiesData
    function drawMap(data) {
 
