@@ -233,8 +233,8 @@
 
       legend.append(
         `<span style="background:${color}"></span>
-			<label>${(breaks[i][0] * 100).toLocaleString()} &mdash;
-			${(breaks[i][1] * 100).toLocaleString()}%</label>`);
+			<label>${(breaks[i][0]).toLocaleString()} &mdash;
+			${(breaks[i][1]).toLocaleString()}</label>`);
     }
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
