@@ -49,3 +49,27 @@ h1 {
     stroke: #0375f8;
     stroke-width: 2;
   }
+
+  #legend {
+    font-size: 1rem;
+    border-radius: 5px;
+    max-width: 200px;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #legend span {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0 10px 4px 0;
+  }
+
+  #legend label {
+    font-size: 0.9rem;
+  }
+
+  #legend label:after {
+    content: '';
+    display: block;
+    clear: both;
+  }

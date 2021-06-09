@@ -12,7 +12,7 @@
 
   // create the Leaflet map
   const map = L.map('map', options);
-  new L.control.zoom({position:"topleft"}).addTo(map)
+  new L.control.zoom({ position: "topleft" }).addTo(map)
 
   // request tiles and add to map
   const tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
@@ -136,6 +136,7 @@
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
   function updateMap(counties) {
+    console.log(counties)
 
     const breaks = getClassBreaks(counties);
 
@@ -164,7 +165,7 @@
     addLegend(breaks);
 
   } //---------------------------------------------------------------------------------------------------------
-  
+
   function getClassBreaks(counties) {
 
     const values = [];
@@ -193,11 +194,11 @@
     if (d <= breaks[0][1]) {
       return '#ebedeb';
     } else if (d <= breaks[1][1]) {
-      return '#d1e8d1';
+      return '#c7e1f0';
     } else if (d <= breaks[2][1]) {
-      return '#76db76';
+      return '#4987ab';
     } else if (d <= breaks[3][1]) {
-      return '#117d11'
+      return '#0b6599'
     }
   }//-------------------------------------------------------------------------------------------------------------------------------------
   function addLegend(breaks) {
