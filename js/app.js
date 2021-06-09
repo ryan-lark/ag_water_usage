@@ -28,6 +28,7 @@
     console.log(error)
   });;
 
+
   $.getJSON("data/cb_2018_us_county.json", function (counties) {
 
     Papa.parse('data/2005_data.csv', {
@@ -65,23 +66,23 @@
 
       console.log(counties);
       // empty array to store all the data values
-      // const rates = [];
+      const rates = [];
 
 
       // iterate through all the counties
-      // counties.features.forEach(function (county) {
+      counties.features.forEach(function (county) {
 
-      //   // iterate through all the props of each county
-      //   for (const prop in county.properties) {
+        // iterate through all the props of each county
+        for (const prop in county.properties) {
 
-      //     // if the attribute is a number and not one of the fips codes or name
-      //     if (prop != "COUNTY_FIP" && prop != "STATE_FIP" && prop != "NAME" && prop != "GEOID") {
+          // if the attribute is a number and not one of the fips codes or name
+          if (prop != "STATEFP" && prop != "NAME" && prop != "GEOID") {
 
-      //       // push that attribute value into the array
-      //       rates.push(Number(county.properties[prop]));
-      //     }
-      //   }
-      // });
+            // push that attribute value into the array
+            rates.push(Number(county.properties[prop]));
+          }
+        }
+      });
 
       // create class breaks
       // var breaks = chroma.limits(rates, 'q', 5);
