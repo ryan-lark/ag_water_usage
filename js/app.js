@@ -159,16 +159,13 @@
   
   function getClassBreaks(counties) {
 
-    // create empty Array for storing values
     const values = [];
 
-    // loop through all the counties
     counties.eachLayer(function (layer) {
       let value = layer.feature.properties[attributeValue];
       values.push(value); // push the normalized value for each layer into the Array
     });
 
-    // determine similar clusters
     const clusters = ss.ckmeans(values, 4);
 
     // create an array of the lowest value within each cluster
@@ -176,7 +173,6 @@
       return [cluster[0], cluster.pop()];
     });
 
-    //return array of arrays, e.g., [[0.24,0.25], [0.26, 0.37], etc]
     return breaks;
   }
 
@@ -197,10 +193,8 @@
     }
   }//-------------------------------------------------------------------------------------------------------------------------------------
   function addLegend(breaks) {
-    // create a new Leaflet control object, and position it top left
     const legendControl = L.control({ position: 'bottomleft' });
 
-    // when the legend is added to the map
     legendControl.onAdd = function () {
 
       // select a div element with an id attribute of legend
