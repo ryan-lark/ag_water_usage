@@ -31,6 +31,7 @@
 
   // AJAX request for GeoJSON data
   $.getJSON("data/us-counties.json", function (counties) {
+    // THE DATA ENDED UP BEING MUCH MORE COMPLICATED TO WORK WITH THAN I EXPECTED, SO I DECIDED TO ONLY USE ONE DATASET FOR THIS PROJECT.;
 
     Papa.parse('data/2005_data.csv', {
 
