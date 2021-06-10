@@ -87,13 +87,7 @@
       }
     });
 
-    // create class breaks
-    var breaks = chroma.limits(rates, 'q', 5);
-
-    // create color generator function
-    var colorize = chroma.scale(chroma.brewer.OrRd).classes(breaks).mode('lab');
-
-    drawMap(counties, colorize);
+    drawMap(counties);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
   function drawMap(counties) {
