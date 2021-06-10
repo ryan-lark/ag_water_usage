@@ -147,7 +147,9 @@
 
       // assemble string sequence of info for tooltip (end line break with + operator)
       let tooltipInfo = `<b>${props["State-County Name"]}</b></br>
-            ${((props[attributeValue])).toLocaleString()} Mgal/d`
+            ${((props[IR-WFrTo])).toLocaleString()} Mgal/d <br>
+            ${((props[IC-WFrTo])).toLocaleString()} Mgal/d <br>
+            ${((props[LS-WFrTo])).toLocaleString()} Mgal/d`
 
       // bind a tooltip to layer with county-specific information
       layer.bindTooltip(tooltipInfo, {
