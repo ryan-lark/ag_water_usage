@@ -1,39 +1,28 @@
 (function () {
-
-  // map options
   const options = {
     scrollWheelZoom: true,
     zoomSnap: .1,
-    center: [39.5, -111],
-    zoom: 3,
+    center: [50, -100], 
+    zoom: 3.5,
     dragging: true,
     zoomControl: false
   }
 
   // create the Leaflet map
   const map = L.map('map', options);
-  new L.control.zoom({ position: "topleft" }).addTo(map)
+  new L.control.zoom({ position: "bottomright" }).addTo(map)
 
   // request tiles and add to map
-  L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
+  const tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     subdomains: 'abcd',
     ext: 'png'
   }).addTo(map);
 
-  let attributeValue = "IR-WFrTo";
-
-  const labels = {
-    "IR-WFrTo": "Total Usage",
-    "IC-WFrTo": "Crop Usage",
-    "LS-WFrTo": "Livestock Usage"
-  }
-
   // AJAX request for GeoJSON data
   $.getJSON("data/us-counties.json", function (counties) {
-    // THE DATA ENDED UP BEING MUCH MORE COMPLICATED TO WORK WITH THAN I EXPECTED, SO I DECIDED TO ONLY USE ONE DATASET FOR THIS PROJECT.;
 
-    Papa.parse('data/2010_data.csv', {
+    Papa.parse('data/masterData.csv', {
 
       download: true,
       header: true,
@@ -42,12 +31,13 @@
         processData(counties, data);
 
       }
-    });
+    }); // end of Papa.parse()
 
   })
-    .fail(function() {
-    console.log("An error has occurred." );
-  });//-------------------------------------------------------------------------------------------------------------------------------------
+  //   .fail(function() {
+  //   // the data file failed to load
+  //   console.log("Ruh roh! An error has occurred." );
+  // });//-------------------------------------------------------------------------------------------------------------------------------------
 
   function processData(counties, data) {
 
@@ -68,6 +58,7 @@
         }
       }
     }
+
     // empty array to store all the data values
     const rates = [];
 
@@ -79,7 +70,7 @@
       for (const prop in county.properties) {
 
         // if the attribute is a number and not one of the fips codes or name
-        if (prop != "County" && prop != "STATE" && prop != "GEOID") {
+        if (prop != "FIPS" && prop != "COUNTY" && prop != "STATE" && prop != "GEOID") {
 
           // push that attribute value into the array
           rates.push(Number(county.properties[prop]));
@@ -87,10 +78,17 @@
       }
     });
 
-    drawMap(counties);
+    // create class breaks
+    var breaks = chroma.limits(rates, 'q', 6);
+
+    // create color generator function
+    var colorize = chroma.scale(['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494']).classes(breaks).mode('lab');
+
+    drawMap(counties, colorize);
+    drawLegend(breaks, colorize);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
-  function drawMap(counties) {
+  function drawMap(counties, colorize) {
 
     // create Leaflet object with geometry data and add to map
     const dataLayer = L.geoJson(counties, {
@@ -113,142 +111,110 @@
         });
         layer.on('mouseout', function () {
           layer.setStyle({
-            color: '#000000'
+            color: '#20282e'
           });
         });
       }
     }).addTo(map);
 
+    // first set the zoom/center to the dataLayer's extent
     map.fitBounds(dataLayer.getBounds());
-    map.setZoom(map.getZoom() - .1);
 
-    updateMap(counties);
-    addUi(counties);
+    // then back the zoom level off a bit (since we're viewing the map full screen)
+    map.setZoom(map.getZoom() - .2);
+
+    updateMap(dataLayer, colorize, '2005');
+    createSliderUI(dataLayer, colorize);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
-  function updateMap(counties, layer) {
-    console.log(counties)
+  function updateMap(dataLayer, colorize, usage) {
 
-    const breaks = getClassBreaks(counties, layer);
-
-    // loop through each county layer to update the color and tooltip info
-    counties.eachLayer(function (layer) {
-
+    dataLayer.eachLayer(function (layer) {
       const props = layer.feature.properties;
 
-      // set the fill color of layer based on its normalized data value
       layer.setStyle({
-        fillColor: getColor(props[attributeValue], breaks)
+        fillColor: colorize(Number(props[usage]))
       });
 
-      // assemble string sequence of info for tooltip (end line break with + operator)
-      let tooltipInfo = `<b>${props["County"]}</b></br>
-            ${((props[IR-WFrTo])).toLocaleString()} Mgal/d <br>
-            ${((props[IC-WFrTo])).toLocaleString()} Mgal/d <br>
-            ${((props[LI-WFrTo])).toLocaleString()} Mgal/d`
+      const tooltip = `<b>${props['COUNTY']}</b><br>
+            ${props[usage]} Mgal/d`;
 
-      // bind a tooltip to layer with county-specific information
-      layer.bindTooltip(tooltipInfo, {
-        // sticky property so tooltip follows the mouse
+      layer.bindTooltip(tooltip, {
         sticky: true
-      });
-
-    });
-
-    addLegend(breaks);
-
-  } //---------------------------------------------------------------------------------------------------------
-
-  function getClassBreaks(counties, layer) {
-
-    const values = layer.feature.properties[attributeValue];
-
-    // counties.eachLayer(function (layer) {
-    //   let value = layer.feature.properties[attributeValue];
-    //   values.push(value);
-    // });
-
-    const clusters = ss.ckmeans(values, 4);
-
-    // create an array of the lowest value within each cluster
-    const breaks = clusters.map(function (cluster) {
-      return [cluster[0], cluster.pop()];
-    });
-
-    return breaks;
-  }
-
-  // Get color of counties
-  function getColor(d, breaks) {
-    // function accepts a single normalized data attribute value
-    // and uses a series of conditional statements to determine 
-    // which color value to return to return to the function caller
-
-    if (d <= breaks[0][1]) {
-      return '#ebedeb';
-    } else if (d <= breaks[1][1]) {
-      return '#c7e1f0';
-    } else if (d <= breaks[2][1]) {
-      return '#4987ab';
-    } else if (d <= breaks[3][1]) {
-      return '#0b6599'
+      })
     }
+    )
+
+
   }//-------------------------------------------------------------------------------------------------------------------------------------
-  function addLegend(breaks) {
-    const legendControl = L.control({ position: 'bottomleft' });
 
-    legendControl.onAdd = function () {
+  function drawLegend(breaks, colorize) {
+    // create a Leaflet control for the legend
+    const legendControl = L.control({
+      position: 'topright'
+    });
 
-      // select a div element with an id attribute of legend
-      const legend = L.DomUtil.get('legend');
+    // when the control is added to the map
+    legendControl.onAdd = function (map) {
 
-      // disable scroll and click/touch on map when on legend
-      L.DomEvent.disableScrollPropagation(legend);
-      L.DomEvent.disableClickPropagation(legend);
-
-      // return the selection to the method
+      // create a new division element with class of 'legend' and return
+      const legend = L.DomUtil.create('div', 'legend');
       return legend;
 
     };
 
+    // add the legend control to the map
     legendControl.addTo(map);
 
-    updateLegend(breaks);
-  } //----------------------------------------------------------------------------------------------------------------------------
+    const legend = $('.legend').html("<h3><span>2005</span> Irrigation Usage</h3><ul>");
 
-  function updateLegend(breaks) {
+    // loop through the break values
+    for (let i = 0; i < breaks.length - 1; i++) {
 
-    // select the legend, add a title, begin an unordered list and assign to a variable
-    const legend = $('#legend').html(`<h5>${labels[attributeValue]}</h5>`);
+      // determine color value 
+      const color = colorize(breaks[i], breaks);
 
-    // loop through the Array of classification break values
-    for (let i = 0; i <= breaks.length - 1; i++) {
+      // create legend item
+      const classRange = `<li><span style="background:${color}"></span>
+            ${breaks[i].toLocaleString()} &mdash;
+            ${breaks[i + 1].toLocaleString()} </li>`
 
-      let color = getColor(breaks[i][0], breaks);
-
-      legend.append(
-        `<span style="background:${color}"></span>
-			<label>${(breaks[i][0]).toLocaleString()} &mdash;
-			${(breaks[i][1]).toLocaleString()}</label>`);
+      // append to legend unordered list item
+      $('.legend ul').append(classRange);
     }
+    // close legend unordered list
+    legend.append("</ul>");
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
-  function addUi(counties) {
-    // create the slider control
-    var selectControl = L.control({ position: "topright" });
+  function createSliderUI(dataLayer, colorize) {
+    const sliderControl = L.control({ position: 'bottomleft' });
 
-    // when control is added
-    selectControl.onAdd = function () {
-      // get the element with id attribute of ui-controls
-      return L.DomUtil.get("dropdown-ui");
-    };
+    // when added to the map
+    sliderControl.onAdd = function (map) {
+
+      // select an existing DOM element with an id of "ui-controls"
+      const slider = L.DomUtil.get("ui-controls");
+
+      // disable scrolling of map while using controls
+      L.DomEvent.disableScrollPropagation(slider);
+
+      // disable click events while using controls
+      L.DomEvent.disableClickPropagation(slider);
+
+      // return the slider from the onAdd method
+      return slider;
+    }
+
     // add the control to the map
-    selectControl.addTo(map);
+    sliderControl.addTo(map);
 
-    $('#dropdown-ui select').change(function () {
-      attributeValue = this.value;
-      updateMap(counties);
-    });
+    // select the form element
+    $(".year-slider")
+      .on("input change", function () { // when user changes
+        const usage = this.value; // update the year
+        $('.legend h3 span').html(usage); // update the map with current timestamp
+        updateMap(dataLayer, colorize, usage); // update timestamp in legend heading
+      });
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
 

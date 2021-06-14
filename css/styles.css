@@ -1,5 +1,5 @@
 h1 {
-    color: #000000;
+    color: #e7e7e7;
   }
   
   #map {
@@ -33,43 +33,69 @@ h1 {
   /* Extra large devices (large desktops, 1200px and up) */
   @media (min-width: 1200px) {}
 
-  .state {
-    fill: none;
-    stroke: #000000;
-    stroke-width: 2;
-  }
-
-  .county {
-    fill: #ffffff;
-    stroke: #001858;
-  }
-
-  .county:hover {
-    fill: #7fb8f8;
-    stroke: #0375f8;
-    stroke-width: 2;
-  }
-
-  #legend {
-    font-size: 1rem;
+  .legend {
+    padding: 6px 8px;
+    font-size: 1em;
+    background: rgba(75, 75, 75, 0.8);
+    color: whitesmoke;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    max-width: 200px;
-    font-family: 'Open Sans', sans-serif;
+    width: 160px;
   }
 
-  #legend span {
-    width: 20px;
+  .legend h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1em;
+    color: whitesmoke;
+    margin: 0;
+  }
+
+  .legend h3 span {
+    font-size: 1.3em;
+    margin: 0 20px 0 0;
+  }
+
+  .legend ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 12px 4px 0;
+  }
+
+  .legend li {
+    height: 22px;
+  }
+
+  .legend span {
+    width: 30px;
     height: 20px;
     float: left;
-    margin: 0 10px 4px 0;
+    margin-right: 10px;
   }
 
-  #legend label {
-    font-size: 0.9rem;
+  #ui-controls {
+    width: 176px;
+    padding: 8px 25px 8px 15px;
+    background: rgba(75, 75, 75, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    color: whitesmoke;
   }
 
-  #legend label:after {
-    content: '';
-    display: block;
-    clear: both;
+  #ui-controls .min {
+    float: left;
+  }
+
+  #ui-controls .max {
+    float: right;
+    margin-right: -15px;
+  }
+
+  .year-slider {
+    width: 100%;
+  }
+
+  label {
+    font-size: 1.1em;
+    font-weight: bold;
   }

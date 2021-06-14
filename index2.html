@@ -5,13 +5,19 @@
   <meta charset=utf-8 />
   <title>U.S. Crop Irrigation</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" 
+  integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css"
+    integrity="sha384-zEpdAL7W11eTKeoBJK1g79kgl9qjP7g84KfK3AZsuonx38n8ad+f5ZgXtoSDxPOh" crossorigin="anonymous">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" />
-  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='css/styles.css' rel='stylesheet' />
 
-  <style>
+  <!-- <style>
     body {
       margin: 0;
       padding: 0;
@@ -54,78 +60,15 @@
       color: #001323;
     }
 
-    .legend {
-      padding: 6px 8px;
-      font-size: 1em;
-      background: rgba(75, 75, 75, 0.8);
-      color: whitesmoke;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      width: 160px;
-    }
-
-    .legend h3 {
-      font-size: 1.1em;
-      font-weight: bold;
-      line-height: 1em;
-      color: whitesmoke;
-      margin: 0;
-    }
-
-    .legend h3 span {
-      font-size: 1.3em;
-      margin: 0 20px 0 0;
-    }
-
-    .legend ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 12px 4px 0;
-    }
-
-    .legend li {
-      height: 22px;
-    }
-
-    .legend span {
-      width: 30px;
-      height: 20px;
-      float: left;
-      margin-right: 10px;
-    }
-
-    #ui-controls {
-      width: 176px;
-      padding: 8px 25px 8px 15px;
-      background: rgba(75, 75, 75, 0.8);
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      color: whitesmoke;
-    }
-
-    #ui-controls .min {
-      float: left;
-    }
-
-    #ui-controls .max {
-      float: right;
-      margin-right: -15px;
-    }
-
-    .year-slider {
-      width: 100%;
-    }
-
-    label {
-      font-size: 1.1em;
-      font-weight: bold;
-    }
-  </style>
+  </style> -->
 </head>
 
 <body>
-  <h1>U.S. Crop Irrigation Rates by County: 2005 &ndash; 2015</h1>
-  <div id="map"></div>
+  <div class="container-fluid">
+    <header class="row py-3 bg-dark text-white">
+      <div class="col mx-2">
+        <h1 class="h1"><b>U.S. Agricultural Water Usage - Crops</b></h1>
+      </div>  <div id="map"></div>
   <div id="ui-controls">
     <label>
       <span class="min">2005</span>
@@ -147,228 +90,8 @@
     integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA=="
     crossorigin="anonymous">
     </script>
-  <script>
-    // map options
-    const options = {
-      scrollWheelZoom: true,
-      zoomSnap: .1,
-      center: [50, -100], 
-      zoom: 3.5,
-      dragging: true,
-      zoomControl: false
-    }
+      <script src='js/app.js'></script>
 
-    // create the Leaflet map
-    const map = L.map('map', options);
-    new L.control.zoom({ position: "bottomright" }).addTo(map)
-
-    // request tiles and add to map
-    const tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      ext: 'png'
-    }).addTo(map);
-
-    // AJAX request for GeoJSON data
-    $.getJSON("data/us-counties.json", function (counties) {
-
-      Papa.parse('data/masterData.csv', {
-
-        download: true,
-        header: true,
-        complete: function (data) {
-
-          processData(counties, data);
-
-        }
-      }); // end of Papa.parse()
-
-    })
-    //   .fail(function() {
-    //   // the data file failed to load
-    //   console.log("Ruh roh! An error has occurred." );
-    // });//-------------------------------------------------------------------------------------------------------------------------------------
-
-    function processData(counties, data) {
-
-      // loop through all the counties
-      for (let county of counties.features) {
-
-        // for each of the CSV data rows
-        for (let csv of data.data) {
-
-          // if the county fips code and data fips code match
-          if (county.properties.GEOID === csv.FIPS) {
-
-            // re-assign the data for that county as the county's props
-            county.properties = csv;
-
-            // no need to keep looping, break from inner loop
-            break;
-          }
-        }
-      }
-
-      // empty array to store all the data values
-      const rates = [];
-
-
-      // iterate through all the counties
-      counties.features.forEach(function (county) {
-
-        // iterate through all the props of each county
-        for (const prop in county.properties) {
-
-          // if the attribute is a number and not one of the fips codes or name
-          if (prop != "FIPS" && prop != "COUNTY" && prop != "STATE" && prop != "GEOID") {
-
-            // push that attribute value into the array
-            rates.push(Number(county.properties[prop]));
-          }
-        }
-      });
-
-      // create class breaks
-      var breaks = chroma.limits(rates, 'q', 6);
-
-      // create color generator function
-      var colorize = chroma.scale(['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494']).classes(breaks).mode('lab');
-
-      drawMap(counties, colorize);
-      drawLegend(breaks, colorize);
-    }//-------------------------------------------------------------------------------------------------------------------------------------
-
-    function drawMap(counties, colorize) {
-
-      // create Leaflet object with geometry data and add to map
-      const dataLayer = L.geoJson(counties, {
-        style: function (feature) {
-          return {
-            color: 'black',
-            weight: 1,
-            fillOpacity: 1,
-            fillColor: '#1f78b4'
-          };
-        },
-        // add hover/touch functionality to each feature layer
-        onEachFeature: function (feature, layer) {
-
-          // when mousing over a layer
-          layer.on('mouseover', function () {
-            layer.setStyle({
-              color: '#FFFF00'
-            }).bringToFront();
-          });
-          layer.on('mouseout', function () {
-            layer.setStyle({
-              color: '#20282e'
-            });
-          });
-        }
-      }).addTo(map);
-
-      // first set the zoom/center to the dataLayer's extent
-      map.fitBounds(dataLayer.getBounds());
-
-      // then back the zoom level off a bit (since we're viewing the map full screen)
-      map.setZoom(map.getZoom() - .2);
-
-      updateMap(dataLayer, colorize, '2001');
-      createSliderUI(dataLayer, colorize);
-    }//-------------------------------------------------------------------------------------------------------------------------------------
-
-    function updateMap(dataLayer, colorize, usage) {
-
-      dataLayer.eachLayer(function (layer) {
-        const props = layer.feature.properties;
-
-        layer.setStyle({
-          fillColor: colorize(Number(props[usage]))
-        });
-
-        const tooltip = `<b>${props['COUNTY']}</b><br>
-              ${props[usage]} Mgal/d`;
-
-        layer.bindTooltip(tooltip, {
-          sticky: true
-        })
-      }
-      )
-
-
-    }//-------------------------------------------------------------------------------------------------------------------------------------
-
-    function drawLegend(breaks, colorize) {
-      // create a Leaflet control for the legend
-      const legendControl = L.control({
-        position: 'topright'
-      });
-
-      // when the control is added to the map
-      legendControl.onAdd = function (map) {
-
-        // create a new division element with class of 'legend' and return
-        const legend = L.DomUtil.create('div', 'legend');
-        return legend;
-
-      };
-
-      // add the legend control to the map
-      legendControl.addTo(map);
-
-      const legend = $('.legend').html("<h3><span>2001</span> Irrigation Usage</h3><ul>");
-
-      // loop through the break values
-      for (let i = 0; i < breaks.length - 1; i++) {
-
-        // determine color value 
-        const color = colorize(breaks[i], breaks);
-
-        // create legend item
-        const classRange = `<li><span style="background:${color}"></span>
-              ${breaks[i].toLocaleString()} &mdash;
-              ${breaks[i + 1].toLocaleString()} </li>`
-
-        // append to legend unordered list item
-        $('.legend ul').append(classRange);
-      }
-      // close legend unordered list
-      legend.append("</ul>");
-    }//-------------------------------------------------------------------------------------------------------------------------------------
-
-    function createSliderUI(dataLayer, colorize) {
-      const sliderControl = L.control({ position: 'bottomleft' });
-
-      // when added to the map
-      sliderControl.onAdd = function (map) {
-
-        // select an existing DOM element with an id of "ui-controls"
-        const slider = L.DomUtil.get("ui-controls");
-
-        // disable scrolling of map while using controls
-        L.DomEvent.disableScrollPropagation(slider);
-
-        // disable click events while using controls
-        L.DomEvent.disableClickPropagation(slider);
-
-        // return the slider from the onAdd method
-        return slider;
-      }
-
-      // add the control to the map
-      sliderControl.addTo(map);
-
-      // select the form element
-      $(".year-slider")
-        .on("input change", function () { // when user changes
-          const usage = this.value; // update the year
-          $('.legend h3 span').html(usage); // update the map with current timestamp
-          updateMap(dataLayer, colorize, usage); // update timestamp in legend heading
-        });
-    }//-------------------------------------------------------------------------------------------------------------------------------------
-
-
-  </script>
 
 </body>
 
