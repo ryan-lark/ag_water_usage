@@ -33,7 +33,7 @@
   $.getJSON("data/us-counties.json", function (counties) {
     // THE DATA ENDED UP BEING MUCH MORE COMPLICATED TO WORK WITH THAN I EXPECTED, SO I DECIDED TO ONLY USE ONE DATASET FOR THIS PROJECT.;
 
-    Papa.parse('data/2005_data.csv', {
+    Papa.parse('data/2010_data.csv', {
 
       download: true,
       header: true,
@@ -80,7 +80,7 @@
       for (const prop in county.properties) {
 
         // if the attribute is a number and not one of the fips codes or name
-        if (prop != "FIPS" && prop != "State-County Name" && prop != "STATE" && prop != "GEOID") {
+        if (prop != "County Name" && prop != "STATE" && prop != "GEOID") {
 
           // push that attribute value into the array
           rates.push(Number(county.properties[prop]));
@@ -163,14 +163,14 @@
 
   } //---------------------------------------------------------------------------------------------------------
 
-  function getClassBreaks(counties) {
+  function getClassBreaks(counties, layer) {
 
-    const values = [];
+    const values = layer.feature.properties[attributeValue];
 
-    counties.eachLayer(function (layer) {
-      let value = layer.feature.properties[attributeValue];
-      values.push(value); // push the normalized value for each layer into the Array
-    });
+    // counties.eachLayer(function (layer) {
+    //   let value = layer.feature.properties[attributeValue];
+    //   values.push(value);
+    // });
 
     const clusters = ss.ckmeans(values, 4);
 
