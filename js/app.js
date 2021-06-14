@@ -119,11 +119,8 @@
       }
     }).addTo(map);
 
-    // first set the zoom/center to the dataLayer's extent
     map.fitBounds(dataLayer.getBounds());
-
-    // then back the zoom level off a bit (since we're viewing the map full screen)
-    map.setZoom(map.getZoom() - .2);
+    map.setZoom(map.getZoom() - .1);
 
     updateMap(counties);
     addUI(counties);
