@@ -130,10 +130,10 @@
     addUI(counties);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
-  function updateMap(counties) {
+  function updateMap(counties, layer) {
     console.log(counties)
 
-    const breaks = getClassBreaks(counties);
+    const breaks = getClassBreaks(counties, layer);
 
     // loop through each county layer to update the color and tooltip info
     counties.eachLayer(function (layer) {
@@ -146,7 +146,7 @@
       });
 
       // assemble string sequence of info for tooltip (end line break with + operator)
-      let tooltipInfo = `<b>${props["State-County Name"]}</b></br>
+      let tooltipInfo = `<b>${props["County"]}</b></br>
             ${((props[IR-WFrTo])).toLocaleString()} Mgal/d <br>
             ${((props[IC-WFrTo])).toLocaleString()} Mgal/d <br>
             ${((props[LS-WFrTo])).toLocaleString()} Mgal/d`
@@ -215,7 +215,6 @@
 
     };
 
-    // add the empty legend div to the map
     legendControl.addTo(map);
 
     updateLegend(breaks);
