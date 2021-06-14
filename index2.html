@@ -3,7 +3,7 @@
 
 <head>
   <meta charset=utf-8 />
-  <title>U.S. Unemployment Rates</title>
+  <title>U.S. Crop Irrigation</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -125,11 +125,11 @@
 </head>
 
 <body>
-  <h1>U.S. Unemployment Rates: 2001 &ndash; 2015</h1>
+  <h1>U.S. Crop Irrigation Rates by County: 2005 &ndash; 2015</h1>
   <div id="map"></div>
   <div id="ui-controls">
     <label>
-      <span class="min">2001</span>
+      <span class="min">2005</span>
       <span class="max">2015</span>
       <input type="range" min="2005" , max="2015" , value="2005" , step="5" , class="year-slider">
     </label>
@@ -153,8 +153,8 @@
     const options = {
       scrollWheelZoom: true,
       zoomSnap: .1,
-      center: [39.5, -111], 
-      zoom: 3,
+      center: [50, -100], 
+      zoom: 4,
       dragging: true,
       zoomControl: false
     }
@@ -316,7 +316,7 @@
       // add the legend control to the map
       legendControl.addTo(map);
 
-      const legend = $('.legend').html("<h3><span>2001</span> Unemployment Rates</h3><ul>");
+      const legend = $('.legend').html("<h3><span>2001</span> Irrigation Usage</h3><ul>");
 
       // loop through the break values
       for (let i = 0; i < breaks.length - 1; i++) {
