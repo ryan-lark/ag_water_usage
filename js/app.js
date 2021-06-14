@@ -123,7 +123,7 @@
     map.setZoom(map.getZoom() - .1);
 
     updateMap(counties);
-    addUI(counties);
+    addUi(counties);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
   function updateMap(counties, layer) {
