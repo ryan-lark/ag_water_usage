@@ -4,7 +4,7 @@
 <head>
   <meta charset=utf-8 />
   <title>U.S. Crop Irrigation</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" 
   integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css"
@@ -67,8 +67,13 @@
   <div class="container-fluid">
     <header class="row py-3 bg-dark text-white">
       <div class="col mx-2">
-        <h1 class="h1"><b>U.S. Agricultural Water Usage - Crops</b></h1>
-      </div>  <div id="map"></div>
+        <h1 class="h1"><b>U.S. Agricultural Water Usage</b></h1>
+      </div>
+    </header>
+
+    <section class="row bg-secondary">
+      <div class="col-12 col-md-7 col-lg-8 px-0">
+        <div id="map" class="bg-light position-relative"></div>
   <div id="ui-controls">
     <label>
       <span class="min">2005</span>
@@ -76,7 +81,15 @@
       <input type="range" min="2005" , max="2015" , value="2005" , step="5" , class="year-slider">
     </label>
   </div>
-
+  <footer class="row bg-dark text-black py-3">
+    <div class="col mx-2">
+      <ul class="list-unstyled">
+        <li>Ryan Lark</li>
+        <li>6.X.21</li>
+      </ul>
+    </div>
+  </footer>
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"

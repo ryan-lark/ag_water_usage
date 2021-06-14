@@ -10,7 +10,7 @@
 
   // create the Leaflet map
   const map = L.map('map', options);
-  new L.control.zoom({ position: "bottomright" }).addTo(map)
+  new L.control.zoom({ position: "topleft" }).addTo(map)
 
   // request tiles and add to map
   const tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
