@@ -114,7 +114,7 @@
         });
         layer.on('mouseout', function () {
           layer.setStyle({
-            color: '#20282e'
+            color: '#000000'
           });
         });
       }
