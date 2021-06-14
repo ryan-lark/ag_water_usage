@@ -131,7 +131,7 @@
     <label>
       <span class="min">2001</span>
       <span class="max">2015</span>
-      <input type="range" min="2001" , max="2015" , value="2001" , step="1" , class="year-slider">
+      <input type="range" min="2005" , max="2015" , value="2005" , step="5" , class="year-slider">
     </label>
   </div>
 
@@ -198,7 +198,7 @@
         for (let csv of data.data) {
 
           // if the county fips code and data fips code match
-          if (county.properties.GEOID === csv.STATE_FIP + csv.COUNTY_FIP) {
+          if (county.properties.GEOID === csv.FIPS) {
 
             // re-assign the data for that county as the county's props
             county.properties = csv;
@@ -220,7 +220,7 @@
         for (const prop in county.properties) {
 
           // if the attribute is a number and not one of the fips codes or name
-          if (prop != "COUNTY_FIP" && prop != "STATE_FIP" && prop != "NAME" && prop != "GEOID") {
+          if (prop != "FIPS" && prop != "COUNTY" && prop != "STATE" && prop != "GEOID") {
 
             // push that attribute value into the array
             rates.push(Number(county.properties[prop]));
@@ -277,17 +277,17 @@
       createSliderUI(dataLayer, colorize);
     }//-------------------------------------------------------------------------------------------------------------------------------------
 
-    function updateMap(dataLayer, colorize, currentYear) {
+    function updateMap(dataLayer, colorize, usage) {
 
       dataLayer.eachLayer(function (layer) {
         const props = layer.feature.properties;
 
         layer.setStyle({
-          fillColor: colorize(Number(props[currentYear]))
+          fillColor: colorize(Number(props[usage]))
         });
 
         const tooltip = `<b>${props['NAME']}</b><br>
-              ${props[currentYear]}% Unemployment`;
+              ${props[usage]}% Unemployment`;
 
         layer.bindTooltip(tooltip, {
           sticky: true
@@ -361,9 +361,9 @@
       // select the form element
       $(".year-slider")
         .on("input change", function () { // when user changes
-          const currentYear = this.value; // update the year
-          $('.legend h3 span').html(currentYear); // update the map with current timestamp
-          updateMap(dataLayer, colorize, currentYear); // update timestamp in legend heading
+          const usage = this.value; // update the year
+          $('.legend h3 span').html(usage); // update the map with current timestamp
+          updateMap(dataLayer, colorize, usage); // update timestamp in legend heading
         });
     }//-------------------------------------------------------------------------------------------------------------------------------------
 
