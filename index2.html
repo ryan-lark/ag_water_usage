@@ -286,8 +286,8 @@
           fillColor: colorize(Number(props[usage]))
         });
 
-        const tooltip = `<b>${props['NAME']}</b><br>
-              ${props[usage]}% Unemployment`;
+        const tooltip = `<b>${props['COUNTY']}</b><br>
+              ${props[usage]} Mgal/d`;
 
         layer.bindTooltip(tooltip, {
           sticky: true
