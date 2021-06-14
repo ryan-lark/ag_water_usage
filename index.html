@@ -1,29 +1,25 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
-  <meta charset="utf-8">
+  <meta charset=utf-8 />
+  <title>U.S. Crop Irrigation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>Ag. Water Usage</title>
-	<!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" 
   integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sandstone/bootstrap.min.css"
     integrity="sha384-zEpdAL7W11eTKeoBJK1g79kgl9qjP7g84KfK3AZsuonx38n8ad+f5ZgXtoSDxPOh" crossorigin="anonymous">
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-	<!-- Leaflet CSS -->
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" />
-    	<!-- Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <link href='css/styles.css' rel='stylesheet' />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='css/styles.css' rel='stylesheet' />
 
 </head>
 
 <body>
-
   <div class="container-fluid">
     <header class="row py-3 bg-dark text-white">
       <div class="col mx-2">
@@ -33,11 +29,11 @@
 
     <section class="row bg-secondary">
       <div class="col-12 col-md-7 col-lg-8 px-0">
-        <div id="map" class="bg-light position-relative"></div>
-      </div>
+        <div id="map" class="bg-light position-relative">
+      </div></div>
       <aside id="about" class="col-12 col-md-5 col-lg-4 text-dark py-2">
         <section>
-          <h2 class="h2 text-dark">Livestock and Crop Water Usage in 2010 by County</h2>
+          <h2 class="h2 text-dark">Agricultural Crop Water Usage in 2010 by County</h2>
           <p></p>
           <p>Created by Ryan Lark.</p>
           <p>All data is given in mega-gallons per day and was sourced from the<a href="https://water.usgs.gov/watuse/data/"> U.S. Geological Survey</a> and the
@@ -48,55 +44,38 @@
             continues to outcompete the replenishment of water stores, water continues to become more scarce and even more valuable. </p>
         </section>
       </aside>
-    </section>
-    <footer class="row bg-dark text-white py-3">
-      <div class="col mx-2">
-        <ul class="list-unstyled">
-          <li>Ryan Lark</li>
-          <li>6.X.21</li>
-        </ul>
-      </div>
-    </footer>
-  </div> <!-- end .container-fluid -->
-
-  <!-- legend is outside of container-fluid and will be dynamically added to map -->
-	<div class="bg-secondary py-2 px-3 ml-3 mt-3 text-white" id="legend"></div>
-
-	<!-- ui is outside of container-fluid and will be dynamically added to map -->
-	<div class="form-group mr-3 mt-3" id="dropdown-ui">
-		<select class="form-control bg-primary text-white">
-			<option value="IR-WFrTo" selected>Total Usage</option>
-			<option value="IC-WFrTo">Crop Usage</option>
-			<option value="LI-WFrTo">Livestock Usage</option>
-		</select>
-	</div>
-	<!-- end ui-controls -->
-
-  <!-- jQuery first and the minified version from jQuery site, not the slim minified version from Bootstrap's site. -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
-    crossorigin="anonymous"></script>
-	<!-- then Popper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous"></script>
-	<!-- then Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-   integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-   crossorigin="anonymous"></script>
-	<!-- then Leaflet JS -->
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-		crossorigin=""></script>
-	<!-- then Papa Parse -->
+  <div id="ui-controls">
+    <label>
+      <span class="min">2005</span>
+      <span class="max">2015</span>
+      <input type="range" min="2005" , max="2015" , value="2005" , step="5" , class="year-slider">
+    </label>
+  </div>
+  <footer class="row bg-dark text-black py-3">
+    <div class="col mx-2">
+      <ul class="list-unstyled">
+        <li>Ryan Lark</li>
+        <li>6.X.21</li>
+      </ul>
+    </div>
+  </footer>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"
+    integrity="sha512-RWI59o+PDXjPl3bakOf3k2ZbDtfvn/OU/ZKe6QmkE0V/ve7vYKEJe0RdkDueS+VkghBazP+1o4LKGON+pHUa5g=="
+    crossorigin="anonymous">
+    </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
     integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA=="
-    crossorigin="anonymous"></script>
-	<!-- then Simple Statistics -->
-  <script src='https://unpkg.com/simple-statistics@7.7.0/dist/simple-statistics.min.js'></script>
-  <script src='js/app.js'></script>
+    crossorigin="anonymous">
+    </script>
+      <script src='js/app.js'></script>
 
-  </script>
+
 </body>
 
 </html>
