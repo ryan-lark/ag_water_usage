@@ -25,8 +25,8 @@
 
   const labels = {
     "IR-WFrTo": "Total Usage",
-    "IC-WFrTo": "Livestock Usage",
-    "LS-WFrTo": "Crop Usage"
+    "IC-WFrTo": "Crop Usage",
+    "LS-WFrTo": "Livestock Usage"
   }
 
   // AJAX request for GeoJSON data
@@ -42,13 +42,12 @@
         processData(counties, data);
 
       }
-    }); // end of Papa.parse()
+    });
 
   })
-  //   .fail(function() {
-  //   // the data file failed to load
-  //   console.log("Ruh roh! An error has occurred." );
-  // });//-------------------------------------------------------------------------------------------------------------------------------------
+    .fail(function() {
+    console.log("An error has occurred." );
+  });//-------------------------------------------------------------------------------------------------------------------------------------
 
   function processData(counties, data) {
 
@@ -80,7 +79,7 @@
       for (const prop in county.properties) {
 
         // if the attribute is a number and not one of the fips codes or name
-        if (prop != "County Name" && prop != "STATE" && prop != "GEOID") {
+        if (prop != "County" && prop != "STATE" && prop != "GEOID") {
 
           // push that attribute value into the array
           rates.push(Number(county.properties[prop]));
@@ -149,7 +148,7 @@
       let tooltipInfo = `<b>${props["County"]}</b></br>
             ${((props[IR-WFrTo])).toLocaleString()} Mgal/d <br>
             ${((props[IC-WFrTo])).toLocaleString()} Mgal/d <br>
-            ${((props[LS-WFrTo])).toLocaleString()} Mgal/d`
+            ${((props[LI-WFrTo])).toLocaleString()} Mgal/d`
 
       // bind a tooltip to layer with county-specific information
       layer.bindTooltip(tooltipInfo, {
