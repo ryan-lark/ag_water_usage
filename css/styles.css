@@ -67,7 +67,10 @@ h1 {
     height: 22px;
   }
 
-  .legend span {
+  .max-width-img {
+    width:100%;
+  }
+    .legend span {
     width: 30px;
     height: 20px;
     float: left;
