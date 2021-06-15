@@ -166,7 +166,7 @@
     // add the legend control to the map
     legendControl.addTo(map);
 
-    const legend = $('.legend').html("<h3><span>2005</span> Irrigation Usage</h3><ul>");
+    const legend = $('.legend').html("<h3><span>2005</span> Irrigation Usage (Mgal/d)</h3><ul>");
 
     // loop through the break values
     for (let i = 0; i < breaks.length - 1; i++) {
@@ -177,7 +177,7 @@
       // create legend item
       const classRange = `<li><span style="background:${color}"></span>
             ${breaks[i].toLocaleString()} &mdash;
-            ${breaks[i + 1].toLocaleString()} </li>`
+            ${breaks[i + 1].toLocaleString()}</li>`
 
       // append to legend unordered list item
       $('.legend ul').append(classRange);
