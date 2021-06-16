@@ -127,12 +127,14 @@
     createSliderUI(dataLayer, colorize);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
+
   function updateMap(dataLayer, colorize, usage) {
 
-    dataLayer.eachLayer(function (layer) {{
-      if (layer.feature.properties["usage"] !== null) {
+    dataLayer.eachLayer(function (layer) {
 
       const props = layer.feature.properties;
+
+      if (props[usage] != '') {
 
       layer.setStyle({
         fillColor: colorize(Number(props[usage]))
@@ -143,10 +145,14 @@
 
     } else {
       var tooltip = `Water Usage Unkown`;
+      
+      layer.setStyle({
+        fillColor: '#eee'
+      });
     }      
     layer.bindTooltip(tooltip, {
         sticky: true
-      })}
+      })
     })
 
 
