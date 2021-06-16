@@ -123,7 +123,7 @@
     // then back the zoom level off a bit (since we're viewing the map full screen)
     map.setZoom(map.getZoom() - .2);
 
-    updateMap(dataLayer, colorize, '2010');
+    updateMap(dataLayer, colorize, '2005');
     createSliderUI(dataLayer, colorize);
   }//-------------------------------------------------------------------------------------------------------------------------------------
 
