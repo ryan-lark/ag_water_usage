@@ -129,21 +129,25 @@
 
   function updateMap(dataLayer, colorize, usage) {
 
-    dataLayer.eachLayer(function (layer) {
+    dataLayer.eachLayer(function (layer) {{
+      if (layer.feature.properties["usage"] !== null) {
+
       const props = layer.feature.properties;
 
       layer.setStyle({
         fillColor: colorize(Number(props[usage]))
       });
 
-      const tooltip = `<b>${props['COUNTY']}</b><br>
+      var tooltip = `<b>${props['COUNTY']}</b><br>
             ${props[usage]} Mgal/d`;
 
-      layer.bindTooltip(tooltip, {
+    } else {
+      var tooltip = `Water Usage Unkown`;
+    }      
+    layer.bindTooltip(tooltip, {
         sticky: true
-      })
-    }
-    )
+      })}
+    })
 
 
   }//-------------------------------------------------------------------------------------------------------------------------------------
