@@ -1,11 +1,9 @@
 {
-    // Required properties
-    "title": "Title of Project", // Give your project a good title
-    "info": "Add info about project", // A short blurb about your project
-    "coordinates": [50, -100], // IMPORTANT: the lat, long centerpoint of your project
+    "title": "U.S. IRRIGATED CROP WATER USAGE",
+    "info": "This map compares water usage by county for crop irrigation in the United States over time at three year increments 
+    (2005, 2010, 2015).",
+    "coordinates": [50, -100],
   
-    // Optional properties
-    // If you don't want to use these, use the value null without quotes.
-    "author": "Do you want to add your name?", // What handle do you want to use?
-    "link": "https://nnewmapsplus.github.io/projects/" // What's the link to the project to the GitHub Pages site? The URL with the .io domain.
+    "author": "Ryan P. Lark",
+    "link": "https://ryan-lark.github.io/ag_water_usage/" 
   }
