@@ -3,7 +3,6 @@
     "info": "This map compares water usage by county for crop irrigation in the United States over time at three year increments 
     (2005, 2010, 2015).",
     "coordinates": [50, -100],
-  
     "author": "Ryan P. Lark",
     "link": "https://ryan-lark.github.io/ag_water_usage/" 
   }
