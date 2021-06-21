@@ -1,0 +1,11 @@
+{
+    // Required properties
+    "title": "Title of Project", // Give your project a good title
+    "info": "Add info about project", // A short blurb about your project
+    "coordinates": [50, -100], // IMPORTANT: the lat, long centerpoint of your project
+  
+    // Optional properties
+    // If you don't want to use these, use the value null without quotes.
+    "author": "Do you want to add your name?", // What handle do you want to use?
+    "link": "https://nnewmapsplus.github.io/projects/" // What's the link to the project to the GitHub Pages site? The URL with the .io domain.
+  }
