@@ -35,9 +35,8 @@
 
   })
 
-  $.getJSON("data/us-counties.json", function () {
-    
-  })
+  const stateGeoJson = d3.json('data/states.geojson')
+
 
   //   .fail(function() {
   //   // the data file failed to load
