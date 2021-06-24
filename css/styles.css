@@ -8,6 +8,12 @@ h1 {
     height: 40vh;
   }
 
+  .state {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 2;
+  }
+  
   #about {
     max-height: 80vh;
     overflow-y: scroll;
