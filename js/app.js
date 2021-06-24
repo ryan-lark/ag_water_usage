@@ -34,6 +34,11 @@
     }); // end of Papa.parse()
 
   })
+
+  $.getJSON("data/us-counties.json", function () {
+    
+  })
+
   //   .fail(function() {
   //   // the data file failed to load
   //   console.log("Ruh roh! An error has occurred." );
