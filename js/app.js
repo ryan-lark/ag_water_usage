@@ -190,10 +190,15 @@
       const color = colorize(breaks[i], breaks);
 
       // create legend item
-      const classRange = `<li><span style="background:${color}"></span>
+      if (breaks[i] == breaks[i + 1]) {
+        var classRange = `<li><span style="background:#F0FFFF"></span>
+        <span style="background:${color}"></span>
+        ${breaks[i].toLocaleString()}</li>`
+      } else {
+        var classRange = `<li><span style="background:${color}"></span>
             ${breaks[i].toLocaleString()} &mdash;
             ${breaks[i + 1].toLocaleString()}</li>`
-
+      }
       // append to legend unordered list item
       $('.legend ul').append(classRange);
     }
